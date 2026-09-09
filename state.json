@@ -1,7 +1,5 @@
 {
-  "available_hotels": {
-    "BA 2027 Hotel HERTZ **** SUITE four-bed room (4 beds) [e-ticket]": "https://brutalassault.cz/en/tickets/detail/id/1155"
-  },
+  "available_hotels": {},
   "known_hotels": {
     "BA 2027 Hotel HERTZ **** STANDARD double room (2 beds) [e-ticket]": "https://brutalassault.cz/en/tickets/detail/id/1153",
     "BA 2027 Hotel HERTZ **** SUITE double room (2 beds) [e-ticket]": "https://brutalassault.cz/en/tickets/detail/id/1154",
