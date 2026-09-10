@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       test_notification:
-        description: "Send a test phone notification"
+        description: "Send a test notification"
         required: false
         type: boolean
         default: false
@@ -34,6 +34,9 @@ jobs:
       - name: Check hotel listings
         env:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_THREAD_ID: ${{ secrets.DISCORD_THREAD_ID }}
+          DISCORD_THREAD_NAME: ${{ secrets.DISCORD_THREAD_NAME }}
           TEST_NOTIFICATION: ${{ inputs.test_notification }}
         run: python monitor.py
 
