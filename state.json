@@ -1,8 +1,7 @@
 {
   "available_hotels": {
     "BA 2027 Hotel KRAKONOS *** five-bed suite (5 beds) [e-ticket]": "https://brutalassault.cz/en/tickets/detail/id/1163",
-    "BA 2027 Hotel KRAKONOS *** four-bed room (4 beds) [e-ticket]": "https://brutalassault.cz/en/tickets/detail/id/1162",
-    "BA 2027 Hotel KRAKONOS *** triple room (3 beds) [e-ticket]": "https://brutalassault.cz/en/tickets/detail/id/1161"
+    "BA 2027 Hotel KRAKONOS *** four-bed room (4 beds) [e-ticket]": "https://brutalassault.cz/en/tickets/detail/id/1162"
   },
   "known_hotels": {
     "BA 2027 Hotel HERTZ **** STANDARD double room (2 beds) [e-ticket]": "https://brutalassault.cz/en/tickets/detail/id/1153",
