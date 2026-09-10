@@ -11,6 +11,9 @@ HOTELS_URL = "https://brutalassault.cz/en/ac-71/hotels"
 AVAILABLE_URL = HOTELS_URL + "?show=ao"
 STATE_FILE = Path("state.json")
 NTFY_TOPIC = os.environ.get("NTFY_TOPIC")
+DISCORD_WEBHOOK_URL = os.environ.get("DISCORD_WEBHOOK_URL")
+DISCORD_THREAD_ID = os.environ.get("DISCORD_THREAD_ID")
+DISCORD_THREAD_NAME = os.environ.get("DISCORD_THREAD_NAME")
 TEST_NOTIFICATION = os.environ.get("TEST_NOTIFICATION", "").lower() == "true"
 
 HEADERS = {
@@ -63,11 +66,9 @@ def save_state(known_hotels, available_hotels):
     )
 
 
-def send_notification(title, message, click_url):
+def send_ntfy_notification(title, message, click_url):
     if not NTFY_TOPIC:
-        raise RuntimeError(
-            "NTFY_TOPIC is not set. Add it as a GitHub Actions repository secret."
-        )
+        return False
 
     response = requests.post(
         f"https://ntfy.sh/{NTFY_TOPIC}",
@@ -81,6 +82,49 @@ def send_notification(title, message, click_url):
         timeout=30,
     )
     response.raise_for_status()
+    return True
+
+
+def send_discord_notification(title, message, click_url):
+    if not DISCORD_WEBHOOK_URL:
+        return False
+
+    content = f"**{title}**\n{message}\n\n{click_url}"
+    content = content[:1900]
+
+    payload = {
+        "content": content,
+        "allowed_mentions": {"parse": []},
+    }
+    params = {"wait": "true"}
+
+    # For a Forum / threads-only channel:
+    # - DISCORD_THREAD_ID posts all alerts into one existing thread.
+    # - Otherwise DISCORD_THREAD_NAME creates a new forum thread for an alert.
+    if DISCORD_THREAD_ID:
+        params["thread_id"] = DISCORD_THREAD_ID
+    elif DISCORD_THREAD_NAME:
+        payload["thread_name"] = DISCORD_THREAD_NAME
+
+    response = requests.post(
+        DISCORD_WEBHOOK_URL,
+        params=params,
+        json=payload,
+        timeout=30,
+    )
+    response.raise_for_status()
+    return True
+
+
+def send_notification(title, message, click_url):
+    sent_ntfy = send_ntfy_notification(title, message, click_url)
+    sent_discord = send_discord_notification(title, message, click_url)
+
+    if not sent_ntfy and not sent_discord:
+        raise RuntimeError(
+            "No notification destination is configured. Add NTFY_TOPIC and/or "
+            "DISCORD_WEBHOOK_URL as GitHub Actions repository secrets."
+        )
 
 
 def main():
